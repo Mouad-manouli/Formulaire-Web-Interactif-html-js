@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .required::after{
+            content: '*';
+            color: red;
+        }
+        span{
+            color: red;
+            font-weight: bold;
+        }
+        input:focus , textarea:focus{
+            border: 3px solid red;
+            outline: none;
+        }
+        input[type=submit]:focus{
+            border: 1px black solid;
+            outline: none; 
+        }
+    </style>
+    <!-- Q1: Creation du formulaire -->
+    <form name="exercice" action="page.php">
+
+        <fieldset>
+            <legend>Vos coordonnées</legend>
+            <label class="required" for="prename">Prénom:</label><input type="text" name="prename" ><span></span> <br><br>
+            <label class="required" for="name">Nom:</label><input type="text" name="name" ><span></span><br><br>
+            <label class="required" for="email">Email:</label><input type="text" name="email" ><span></span><br><br>
+            <label class="required" for="pays">Pays:</label><br>
+            <select name="pays" id="pays">
+                <option value="" selected></option>
+                <option value="Maroc" >Maroc</option>
+                <option value="France">France</option>
+                <option value="USA">USA</option>
+            </select><span></span><br><br>
+            <label class="required" for="sexe">Genre:</label><input type="radio" name="sexe" class="gender" id="homme" value="h" ><label for="homme">Homme</label><input type="radio" class="gender" name="sexe" id="femme" value="f"><label for="femme">Femme</label><span></span>
+        </fieldset>
+
+        <fieldset>
+            <legend class="required">Vos compétences</legend> 
+            <input type="checkbox" class="comp" name="html" id="html" ><label>HTML</label>
+            <input type="checkbox" class="comp" name="css" id="css"><label>CSS</label>
+            <input type="checkbox" class="comp" name="php" id="php"><label>PHP</label>
+            <input type="checkbox" class="comp" name="sql" id="sql"><label>MySQL</label>
+            <input type="checkbox" class="comp" name="js" id="js"><label>Javascript</label> <span></span><br><br>
+            <label class="required" for="comments">Commentaires:</label><span></span><br>
+            <textarea name="comments" id="" cols="30" rows="5"></textarea>
+        </fieldset>
+
+        <input name="submit" type="submit" value="ENVOYER">
+
+    </form>
+    <script>
+        // Declaration des variables
+        let spans = document.getElementsByTagName('span');
+        let formul = document.exercice;
+        let test = true;
+        // Q2:Fonction verifier
+        function verifier(){
+            if (formul.prename.value=="") {
+            spans[0].textContent=" Veullier saisir votre prénom ";
+            test=false
+          }else{
+            spans[0].textContent="";
+        }
+            if (formul.name.value=="") {
+            spans[1].textContent=" Veullier saisir votre nom ";
+            test=false
+          }else{
+            spans[1].textContent="";
+        }
+            if (formul.email.value=="") {
+            spans[2].textContent=" Veullier saisir votre email ";
+            test=false
+          }else{
+            spans[2].textContent="";
+        }
+            if (formul.pays.value=="") {
+            spans[3].textContent=" Veullier saisir votre pays ";
+            test=false
+          }else{
+            spans[3].textContent="";
+        }
+            if (formul.sexe.value=='') {
+            spans[4].textContent=" Veullier saisir votre genre ";
+            test=false
+          }else{
+            spans[4].textContent="";
+        }
+            if (formul.html.checked==false && formul.css.checked==false && formul.php.checked==false && formul.js.checked==false && formul.sql.checked==false) {
+            spans[5].textContent=" Veullier saisir vos compétences ";
+            test=false
+          }else{
+            spans[5].textContent="";
+        }
+        if (formul.comments.value=='') {
+            spans[6].textContent=" Veullier saisir votre commentaire ";
+            test=false
+          }else{
+            spans[6].textContent="";
+        }
+        return test
+        }
+        // Q3: final checks
+        
+        
+        function prenom (){
+            if(formul.prename.value.length>3){
+                test_3 = true
+                formul.prename.style.borderColor='green'
+                spans[0].textContent="";
+            }
+            else{
+                test_3 = false
+                formul.prename.style.borderColor='red'
+                spans[0].textContent=" Prénom doit contenir plus de 3 caractére ";
+            }  
+            return test_3
+        }
+        formul.prename.onkeyup = function (){
+          prenom()
+        }
+
+        function nom (){
+            if(formul.name.value.length>3){
+                formul.name.style.borderColor='green'
+                spans[1].textContent="";
+                test_4 =  true
+
+            }
+            else{
+                formul.name.style.borderColor='red'
+                spans[1].textContent="Nom doit contenir plus de 3 caractére ";
+                test_4 = false
+            }
+            return test_4
+        }
+
+        formul.name.onkeyup = function(){
+            nom()
+        }
+    
+        function Mail(){
+                let expression = /(.){3,}@(.){2,5}\.(.){2,}/;
+                if(formul.email.value.match(expression)){
+                    formul.email.style.borderColor = 'green';
+                    spans[2].textContent="";
+                    return true
+                }else{
+                    formul.email.style.borderColor = 'red';
+                    spans[2].textContent=" Email comme : example@ex.ex ";
+                    return false
+                }
+            }
+            formul.email.onkeyup = function (){
+                Mail()
+            }
+
+            function Payss (){
+            if(!formul.pays.value==""){
+                formul.pays.style.borderColor='green'
+                spans[3].textContent="";
+                test_8 =  true
+            }
+            else{
+                formul.pays.style.borderColor='red'
+                spans[3].textContent=" Veuillez choisir un pays ";
+                test_8 = false
+            }
+            return test_8
+        }
+        formul.pays.onclick = function (){
+            Payss()
+        }
+
+        function Genres (){
+            if(!formul.sexe.value==""){
+                spans[4].textContent="";
+                test =  true
+            }
+            else{
+                spans[4].textContent=" Veuillez choisir votre genre ";
+                test = false
+            }
+            return test
+        }
+        genderrs = document.querySelectorAll("input[type=radio]")
+        genderrs[0].onchange = function (){
+            Genres()
+        }
+        genderrs[1].onchange = function (){
+            Genres()
+        }
+        
+        comps = document.getElementsByClassName("comp")
+        function competencess (){
+            if(formul.html.checked==true || formul.css.checked==true || formul.php.checked==true || formul.js.checked==true || formul.sql.checked==true){
+                spans[5].textContent="";
+                test =  true
+            }
+            else{
+                formul.html.style.borderColor='red'
+                spans[5].textContent=" Veuillez choisir minimum une compétence ";
+                test = false
+            }
+            return test
+        }
+        comps[0].onclick = function (){
+            competencess()
+        }
+        comps[1].onclick = function (){
+            competencess()
+        }
+        comps[2].onclick = function (){
+            competencess()
+        }
+        comps[3].onclick = function (){
+            competencess()
+        }
+        comps[4].onclick = function (){
+            competencess()
+        }
+
+
+        function commentaire (){
+            if(formul.comments.value.length>10){
+                formul.comments.style.borderColor='green'
+                spans[6].textContent="";
+                test =  true
+            }
+            else{
+                formul.comments.style.borderColor='red'
+                spans[6].textContent=" Commentaire doit contenir plus de 10 caractére ";
+                test = false
+            }
+            return test
+        }
+
+        formul.comments.onkeyup = function (){
+            commentaire()
+        }
+
+        
+           
+        // Return final des resultats onsubmit
+        document.exercice.onsubmit = function(){
+            if(verifier() && prenom() && nom() && commentaire() && Mail() && Payss() && Genres() && competencess()){
+                return  true 
+            }else{
+                return false
+            }
+        }
+    </script>
+</body>
+</html>
